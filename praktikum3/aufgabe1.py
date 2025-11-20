@@ -1,29 +1,16 @@
-import os
 import pandas as pd
 
-
-fname = "countries_population.csv"
-
 df = pd.read_csv(
-    fname,
-    sep=r"\s+(?=\d)",      
+    "countries_population.csv",
+    sep=r"\s+(?=\d)",
     engine="python",
     header=None,
-    names=["country", "population"]
+    names=["Country", "Population"],
+    thousands=","
 )
 
+df["Country"] = df["Country"].str.strip("'")
+
+df = df.set_index("Country")
+
 print(df.head())
-
-
-
-
-
-
-
-
-
-
-
-
-
-#thousands=",""
