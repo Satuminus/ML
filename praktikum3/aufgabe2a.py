@@ -7,7 +7,7 @@ df = pd.read_csv(
 )
 
 df["population"] = df["male"] + df["female"]
-df["density"] = df["population"] / df["area"]
+df["density"] = df["population"] / df["area"] * 1000
 
 df = df[["land", "area", "female", "male", "population", "density"]]
 
