@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 
 df = pd.read_csv(
@@ -7,15 +6,14 @@ df = pd.read_csv(
     header=0
 )
 
-# Hochskalieren, da sonst berechnung mit fläche nicht realistisch
-df["male"] = df["male"] * 1000
-df["female"] = df["female"] * 1000
-
 df["population"] = df["male"] + df["female"]
-df["density"] = df["population"] / df["area"]
 
-df = df[["land", "area", "female", "male", "population", "density"]]
+df["density"] = (df["population"] * 1000) / df["area"]
+
+df["density"] = df["density"].round(0)
 
 dichte_hoch = df[df["density"] > 1000]
+
+dichte_hoch = dichte_hoch[["land", "area", "female", "male", "population", "density"]]
 
 print(dichte_hoch)
