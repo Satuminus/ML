@@ -14,6 +14,8 @@ df["female"] = df["female"] * 1000
 df["population"] = df["male"] + df["female"]
 df["density"] = df["population"] / df["area"]
 
+df = df[["land", "area", "female", "male", "population", "density"]]
+
 dichte_hoch = df[df["density"] > 1000]
 
 print(dichte_hoch)
