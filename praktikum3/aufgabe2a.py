@@ -1,20 +1,20 @@
-import os
 import pandas as pd
-
-fname = "bundeslaender.txt"
 
 # Datei einlesen
 df = pd.read_csv(
-    fname,
-    sep=r"\s+",     # beliebig viele Leerzeichen als Trennzeichen
+    "bundeslaender.txt",
+    sep=r"\s+",
     header=0
 )
 
-# neue Spalten erzeugen
+# neue Spalten berechnen
 df["population"] = df["male"] + df["female"]
 df["density"] = df["population"] / df["area"]
 
-# Ausgabe der ersten Zeilen
+# gewünschte Spaltenreihenfolge
+df = df[["land", "area", "female", "male", "population", "density"]]
+
+# Ergebnis anzeigen
 print(df.head())
 
 # neue Datei speichern
