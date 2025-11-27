@@ -4,23 +4,17 @@ import matplotlib.pyplot as plt
 # ---------------------------
 # 1. Daten einlesen
 # ---------------------------
-# Falls iris.csv in einem anderen Ordner liegt, Pfad entsprechend anpassen
 df = pd.read_csv("iris.csv")
 
-# Spaltennamen für die vier numerischen Merkmale
 features = ["sepal.length", "sepal.width", "petal.length", "petal.width"]
-
-# Klassen (Objektklassen)
 classes = ["Setosa", "Versicolor", "Virginica"]
 
-# Farben für die Klassen
 colors = {
-    "Setosa": "b",       # blau
-    "Versicolor": "r",   # rot
-    "Virginica": "g"     # grün
+    "Setosa": "b",
+    "Versicolor": "r",
+    "Virginica": "g"
 }
 
-# Achsentitel (wie in der Aufgabenstellung mit (cm))
 axis_labels = {
     "sepal.length": "sepal length (cm)",
     "sepal.width": "sepal width (cm)",
@@ -29,25 +23,45 @@ axis_labels = {
 }
 
 # ---------------------------
-# 2. Histogramme zeichnen
+# 2. Histogramme (2x2) wie in VL (über subplot)
 # ---------------------------
-fig, axes = plt.subplots(2, 2, figsize=(12, 8))
-axes = axes.ravel()  # 2x2-Array in flache Liste umwandeln
+plt.figure(figsize=(12, 8))
 
-for ax, feature in zip(axes, features):
-    for cls in classes:
-        subset = df[df["variety"] == cls][feature]
-        ax.hist(
-            subset,
-            bins=10,
-            alpha=0.7,
-            label=cls.lower(),   # Beschriftung setosa / versicolor / virginica
-            color=colors[cls],
-            edgecolor="black"
-        )
-    ax.set_xlabel(axis_labels[feature])
-    ax.set_ylabel("Häufigkeit")
-    ax.legend()
+# Erstes Histogramm
+plt.subplot(221)
+for cls in classes:
+    subset = df[df["variety"] == cls][features[0]]
+    plt.hist(subset, bins=10, alpha=0.7, color=colors[cls], edgecolor="black", label=cls.lower())
+plt.xlabel(axis_labels[features[0]])
+plt.ylabel("Häufigkeit")
+plt.legend()
+
+# Zweites Histogramm
+plt.subplot(222)
+for cls in classes:
+    subset = df[df["variety"] == cls][features[1]]
+    plt.hist(subset, bins=10, alpha=0.7, color=colors[cls], edgecolor="black", label=cls.lower())
+plt.xlabel(axis_labels[features[1]])
+plt.ylabel("Häufigkeit")
+plt.legend()
+
+# Drittes Histogramm
+plt.subplot(223)
+for cls in classes:
+    subset = df[df["variety"] == cls][features[2]]
+    plt.hist(subset, bins=10, alpha=0.7, color=colors[cls], edgecolor="black", label=cls.lower())
+plt.xlabel(axis_labels[features[2]])
+plt.ylabel("Häufigkeit")
+plt.legend()
+
+# Viertes Histogramm
+plt.subplot(224)
+for cls in classes:
+    subset = df[df["variety"] == cls][features[3]]
+    plt.hist(subset, bins=10, alpha=0.7, color=colors[cls], edgecolor="black", label=cls.lower())
+plt.xlabel(axis_labels[features[3]])
+plt.ylabel("Häufigkeit")
+plt.legend()
 
 plt.tight_layout()
 plt.show()
