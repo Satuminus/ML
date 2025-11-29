@@ -24,13 +24,13 @@ axis_labels = {
 fig, axes = plt.subplots(2, 2, figsize=(12, 8))
 axes = axes.ravel()
 
-for ax, feature in zip(axes, features):
+for ax, feature in zip(axes, features): 
     for cls in classes:
         subset = df[df["variety"] == cls][feature]
         ax.hist(
             subset,
-            bins=10, # Anzahl der Balken
-            alpha=0.6, # Transparenz
+            bins=10,
+            alpha=0.6,
             label=cls.lower(),
             color=colors[cls],
             edgecolor="black"
