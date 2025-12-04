@@ -1,16 +1,14 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
-import matplotlib.pyplot as plt
+#from sklearn.preprocessing import MinMaxScaler
+#import matplotlib.pyplot as plt
 
-# ----------------------------------------------------
 # Daten laden
-# ----------------------------------------------------
+
 df = pd.read_csv("rawdata_luftqualitaet.csv")
 
-# ----------------------------------------------------
 # Eingangsmerkmale und Zielvariable
-# ----------------------------------------------------
+
 X = df[[
     "humidity_inside",
     "temperature_inside",
@@ -21,9 +19,8 @@ X = df[[
 
 y = df["state_air_quality"]
 
-# ----------------------------------------------------
-# Aufgabe 1b: Trainings- und Testdatensatz erzeugen
-# ----------------------------------------------------
+# 1b)
+
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
@@ -31,13 +28,10 @@ X_train, X_test, y_train, y_test = train_test_split(
 print("Trainingsdatengröße:", X_train.shape)
 print("Testdatengröße:     ", X_test.shape)
 
-# ----------------------------------------------------
-# Aufgabe 1c: Daten skalieren mit StandardScaler
-# ----------------------------------------------------
+# 1c)
+from sklearn.preprocessing import MinMaxScaler
+import matplotlib.pyplot as plt
 
-# ----------------------------------------------------
-# Aufgabe 1c: Daten skalieren mit MinMaxScaler (0..1)
-# ----------------------------------------------------
 scaler = MinMaxScaler()
 
 # Fit nur auf den Trainingsdaten!
@@ -49,9 +43,8 @@ X_test_scaled = scaler.transform(X_test)
 
 print("Skalierung (0..1) abgeschlossen.")
 
-# ----------------------------------------------------
 # VISUALISIERUNG: Histogramm vorher vs. nachher
-# ----------------------------------------------------
+
 scaled_df = pd.DataFrame(X_train_scaled, columns=X_train.columns)
 
 fig, axes = plt.subplots(5, 2, figsize=(12, 15))
@@ -69,13 +62,13 @@ for i, col in enumerate(X_train.columns):
 plt.tight_layout()
 plt.show()
 
+# 1d)
 from sklearn.neural_network import MLPClassifier
+import matplotlib.pyplot as plt
 
-# ----------------------------------------------------
 # Aufgabe 1d: MLPClassifier trainieren
-# ----------------------------------------------------
 
-# Modell erstellen (VL-konform)
+# Modell erstellen
 mlp = MLPClassifier(
     hidden_layer_sizes=(50,),  # 1 versteckte Schicht mit 50 Neuronen
     activation='relu',         # ReLU-Aktivierungsfunktion (VL-Standard)
@@ -98,21 +91,10 @@ print("Trainingsgenauigkeit:", train_acc)
 test_acc = mlp.score(X_test_scaled, y_test)
 print("Testgenauigkeit:", test_acc)
 
-# Loss-curve plotten
-import matplotlib.pyplot as plt
-plt.plot(mlp.loss_curve_)
-plt.title("LossCurve während des Trainings")
-plt.xlabel("Iteration")
-plt.ylabel("Loss")
-plt.show()
-
+# 1e)
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 import seaborn as sns
 import matplotlib.pyplot as plt
-
-# ----------------------------------------------------
-# Aufgabe 1e: Modellgüte ausgeben
-# ----------------------------------------------------
 
 # Vorhersage auf den Testdaten
 y_pred = mlp.predict(X_test_scaled)
@@ -121,21 +103,6 @@ y_pred = mlp.predict(X_test_scaled)
 acc = accuracy_score(y_test, y_pred)
 print("Genauigkeit (Accuracy) auf Testdaten:", acc)
 
-# Konfusionsmatrix
-cm = confusion_matrix(y_test, y_pred)
-
-print("\nKonfusionsmatrix:")
-print(cm)
-
-# Visualisierung der Confusion Matrix
-plt.figure(figsize=(6, 5))
-sns.heatmap(cm, annot=True, cmap="magma", fmt="d")
-plt.title("Confusion Matrix des MLP")
-plt.xlabel("Vorhergesagte Klasse")
-plt.ylabel("Wahre Klasse")
-plt.tight_layout()
-plt.show()
-
-# Optional: detaillierter Bericht
-print("\nClassification Report:")
-print(classification_report(y_test, y_pred))
+#Bericht
+#print("\nClassification Report:")
+#print(classification_report(y_test, y_pred))
