@@ -121,12 +121,14 @@ def build_model(window_size: int, n_features: int, learning_rate: float = 1e-3) 
 def main():
     # (a)
     df = load_and_prepare_timeseries(CSV_PATH)
+    print("\na)")
     print("DataFrame (Zeitreihe) erstellt:", df.shape)
     print("Zeitraum gesamt:", df.index.min(), "->", df.index.max())
     print(df.head(10))
 
     # (b)
     train_df, test_df = train_test_split_time(df)
+    print("\nb)")
     print("\nTrain:", train_df.shape, "Zeitraum:", train_df.index.min(), "->", train_df.index.max())
     print("Test :", test_df.shape, "Zeitraum:", test_df.index.min(), "->", test_df.index.max())
     print("\nLetzte 3 Zeilen Train:")
@@ -140,7 +142,7 @@ def main():
     # (c) Fenster erzeugen
     X_train_w, y_train_w = create_windows(X_train_s, y_train_s, WINDOW_SIZE, HORIZON)
     X_test_w, y_test_w = create_windows(X_test_s, y_test_s, WINDOW_SIZE, HORIZON)
-
+    print("\nc)")
     print("\nFensterdaten:")
     print("X_train:", X_train_w.shape)
     print("y_train:", y_train_w.shape)
@@ -153,6 +155,7 @@ def main():
 
     # (d) Modell definieren & kompilieren
     model = build_model(window_size=WINDOW_SIZE, n_features=len(FEATURE_COLS))
+    print("\nd)")
     print("\nKeras Modell (d) Summary:")
     model.summary()
 
@@ -183,6 +186,7 @@ def main():
 
     # Auswertung auf dem Testset (standardisierte Skala!)
     test_loss, test_mae = model.evaluate(X_test_w, y_test_w, verbose=0)
+    print("\ne)")
     print(f"\nTest MAE (standardisiert): {test_mae:.4f}")
 
     # Optional: MAE zurück in Originalskala (Dcp) rechnen
@@ -209,7 +213,7 @@ def main():
     plt.figure(figsize=(12,5))
     plt.plot(y_test_orig[:N], label="Gemessen")
     plt.plot(y_pred_orig[:N], label="Vorhergesagt")
-    plt.title("Vergleich: gemessene vs. prognostizierte Dcp-Werte")
+    plt.title("f) Vergleich: gemessene vs. prognostizierte Dcp-Werte")
     plt.xlabel("Zeitindex (5-Minuten Schritte)")
     plt.ylabel("Dcp")
     plt.legend()
